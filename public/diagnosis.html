@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  <title>Dementia Risk Calculator</title>
+  <style>
+    body {
+      font-family: Comfortaa, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Dementia Risk Calculator</h1>
+  <button onclick="window.location.href='/index.html';"> Click here to go back </button>
+
+  <form id="dementiaForm">
+    <label for="age">Enter age:</label>
+    <input type="number" id="age" required>
+
+    <label for="familyHistory">Is there a family history? (yes/no):</label>
+    <input type="text" id="familyHistory" required>
+
+    <label for="smoking">Do you smoke? (yes/no):</label>
+    <input type="text" id="smoking" required>
+
+    <label for="alcoholUse">Do you drink alcohol? (yes/no):</label>
+    <input type="text" id="alcoholUse" required>
+
+    <label for="atherosclerosis">Do you have/have a history of atherosclerosis? (yes/no):</label>
+    <input type="text" id="atherosclerosis" required>
+
+    <label for="cholesterol">Do you have high cholesterol? (yes/no):</label>
+    <input type="text" id="cholesterol" required>
+
+    <label for="homocysteine">Do you have high homocysteine levels? (yes/no):</label>
+    <input type="text" id="homocysteine" required>
+
+    <label for="diabetes">Do you have diabetes? (yes/no):</label>
+    <input type="text" id="diabetes" required>
+
+    <label for="mildCognitiveImpairment">Do you experience mild cognitive impairment from time to time?
+      (yes/no):</label>
+    <input type="text" id="mildCognitiveImpairment" required>
+
+    <button type="button" onclick="calculateRisk()">Calculate Risk</button>
+  </form>
+
+  <p id="result"></p>
+
+  <script>
+    function calculateRisk() {
+      var age = document.getElementById('age').value;
+      var familyHistory = document.getElementById('familyHistory').value.toLowerCase() === 'yes';
+      var smoking = document.getElementById('smoking').value.toLowerCase() === 'yes';
+      var alcoholUse = document.getElementById('alcoholUse').value.toLowerCase() === 'yes';
+      var atherosclerosis = document.getElementById('atherosclerosis').value.toLowerCase() === 'yes';
+      var cholesterol = document.getElementById('cholesterol').value.toLowerCase() === 'yes';
+      var homocysteine = document.getElementById('homocysteine').value.toLowerCase() === 'yes';
+      var diabetes = document.getElementById('diabetes').value.toLowerCase() === 'yes';
+      var mildCognitiveImpairment = document.getElementById('mildCognitiveImpairment').value.toLowerCase() === 'yes';
+
+      var riskLevel = calculateDementiaRisk(age, familyHistory, smoking, alcoholUse, atherosclerosis, cholesterol, homocysteine, diabetes, mildCognitiveImpairment);
+
+      document.getElementById('result').innerText = 'Your risk level for dementia is: ' + riskLevel;
+    }
+
+    function calculateDementiaRisk(age, familyHistory, smoking, alcoholUse, atherosclerosis, cholesterol, homocysteine, diabetes, mildCognitiveImpairment) {
+      var riskScore = 0;
+
+      if (age > 65) riskScore += 2;
+      if (familyHistory) riskScore += 1;
+      if (smoking) riskScore += 2;
+      if (alcoholUse) riskScore += 1;
+      if (atherosclerosis) riskScore += 2;
+      if (cholesterol) riskScore += 1;
+      if (homocysteine) riskScore += 2;
+      if (diabetes) riskScore += 2;
+      if (mildCognitiveImpairment) riskScore += 3;
+
+      if (riskScore <= 5) return 'Low Risk';
+      else if (riskScore <= 10) return 'Moderate Risk';
+      else return 'High Risk';
+    }
+  </script>
+
+</body>
+
+</html>

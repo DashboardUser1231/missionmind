@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  <title>Memory Game</title>
+  <style>
+    body {
+      font-family: 'Comfortaa', sans-serif;
+      text-align: center;
+    }
+
+    #game-container {
+      margin-top: 50px;
+      font-size: 24px;
+    }
+
+    #recall-input {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="game-container"></div>
+  <input type="text" id="recall-input" placeholder="Enter the sequence">
+  <button onclick="window.location.href='/index.html';"> Click here to go back </button>
+
+  <script>
+    // Memory Game Logic
+    const sequence = generateSequence(5); // Change the parameter to adjust the sequence length
+    let userInput = [];
+
+    displaySequence();
+
+    function generateSequence(length) {
+      return Array.from({length}, () => Math.floor(Math.random() * 10));
+    }
+
+    function displaySequence() {
+      const gameContainer = document.getElementById('game-container');
+      gameContainer.textContent = sequence.join(' ');
+
+      setTimeout(() => {
+        gameContainer.textContent = '';
+        setTimeout(() => {
+          getUserInput();
+        }, 500);
+      }, 2000);
+    }
+
+    function getUserInput() {
+      const recallInput = document.getElementById('recall-input');
+      recallInput.value = '';
+      recallInput.focus();
+      recallInput.addEventListener('keydown', handleInput);
+    }
+
+    function handleInput(event) {
+      if (event.key === 'Enter') {
+        const recallInput = document.getElementById('recall-input');
+        userInput = recallInput.value.split('').map(Number);
+
+        const score = calculateScore();
+        alert(`Your score: ${score}`);
+
+        // Restart the game
+        sequence.length += 1; // Increase sequence length for the next round
+        userInput = [];
+        displaySequence();
+      }
+    }
+
+    function calculateScore() {
+      let score = 0;
+
+      for (let i = 0; i < userInput.length; i++) {
+        if (userInput[i] === sequence[i]) {
+          score += 1;
+        }
+      }
+
+      return score;
+    }
+  </script>
+
+</body>
+
+</html>

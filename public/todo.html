@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Comfortaa, sans-serif;
+      background-color: #f4f4f4;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #fff;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    li input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 70%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>To-Do List</h1>
+
+  <div>
+    <input type="text" id="newTask" placeholder="Add a new task...">
+    <button onclick="addTask()">Add Task</button>
+    <button onclick="window.location.href='/index.html';"> Click here to go back </button>
+  </div>
+
+  <ul id="taskList">
+    <!-- Tasks will be added dynamically here -->
+  </ul>
+
+  <script>
+    // Load tasks from cookies when the page loads
+    window.onload = function () {
+      loadTasks();
+    };
+
+    function addTask() {
+      var newTaskInput = document.getElementById("newTask");
+      var taskList = document.getElementById("taskList");
+
+      if (newTaskInput.value.trim() !== "") {
+        var li = document.createElement("li");
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        li.appendChild(checkbox);
+
+        var taskText = document.createTextNode(" " + newTaskInput.value);
+        li.appendChild(taskText);
+
+        taskList.appendChild(li);
+
+        saveTasks(); // Save tasks to cookies
+        newTaskInput.value = ""; // Clear the input field
+      }
+    }
+
+    function saveTasks() {
+      var taskList = document.getElementById("taskList");
+      var tasks = taskList.innerHTML;
+
+      // Save tasks to a cookie named "tasks"
+      document.cookie = "tasks=" + encodeURIComponent(tasks);
+    }
+
+    function loadTasks() {
+      var taskList = document.getElementById("taskList");
+      var tasks = getCookie("tasks");
+
+      if (tasks) {
+        taskList.innerHTML = decodeURIComponent(tasks);
+      }
+    }
+
+    function getCookie(name) {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(name + "=") === 0) {
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return "";
+    }
+  </script>
+
+</body>
+
+</html>
